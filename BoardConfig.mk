@@ -99,6 +99,7 @@ LOC_HIDL_VERSION := 4.1
 BOARD_SHIPPING_API_LEVEL := 30
 
 # HIDL
+DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += vendor/xtended/config/device_framework_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := $(DEVICE_PATH)/configs/hidl/framework_manifest.xml
 DEVICE_MANIFEST_FILE := $(DEVICE_PATH)/configs/hidl/manifest.xml
 DEVICE_MANIFEST_FILE += $(DEVICE_PATH)/configs/hidl/manifest_k$(TARGET_KERNEL_VERSION).xml
@@ -171,7 +172,7 @@ $(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
 $(foreach p, $(call to-upper, $(TREBLE_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 41943040)) # 40 MB
 
-ifeq ($(TARGET_DISABLES_GMS), true)
+ifneq ($(WITH_GMS), true)
 # Partitions - reserved without gapps
 BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 838860800 # 800 MB
 BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 314572800 # 300 MB
