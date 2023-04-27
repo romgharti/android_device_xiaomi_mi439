@@ -6,6 +6,7 @@
 #
 
 DEVICE_PATH := device/xiaomi/mi439
+BOARD_USES_QCOM_HARDWARE := true
 
 # ANT
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
@@ -171,7 +172,7 @@ $(foreach p, $(call to-upper, $(SSI_PARTITIONS)), \
 $(foreach p, $(call to-upper, $(TREBLE_PARTITIONS)), \
     $(eval BOARD_$(p)IMAGE_PARTITION_RESERVED_SIZE := 41943040)) # 40 MB
 
-ifeq ($(TARGET_DISABLES_GMS), true)
+ifneq ($(WITH_GMS), true)
 # Partitions - reserved without gapps
 BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 838860800 # 800 MB
 BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 314572800 # 300 MB
@@ -210,6 +211,8 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(DEVICE_PATH)
 VENDOR_SECURITY_PATCH := 2021-07-01
 
 # SELinux
+SELINUX_IGNORE_NEVERALLOWS := true
+include device/qcom/sepolicy-legacy/SEPolicy.mk
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/biometrics/sepolicy
 SYSTEM_EXT_PUBLIC_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/public
@@ -217,6 +220,10 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 ifeq (true,$(call math_lt,$(PRODUCT_SHIPPING_API_LEVEL),28))
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/legacy/vendor
 endif
+BOARD_SEPOLICY_M4DEFS += \
+  sysfs_battery_supply=vendor_sysfs_battery_supply \
+  sysfs_scsi_target=vendor_sysfs_scsi_target \
+  diag_device=vendor_diag_device
 
 # Treble
 PRODUCT_FULL_TREBLE_OVERRIDE := true
@@ -245,6 +252,3 @@ endif
 
 # MIthorium HALs
 QCOM_SOONG_NAMESPACE := hardware/mithorium
-
-# QC common
-include device/qcom/common/BoardConfigQcom.mk

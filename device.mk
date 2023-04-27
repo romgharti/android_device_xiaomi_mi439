@@ -177,6 +177,17 @@ MITHORIUM_PRODUCT_PACKAGES += \
     android.hardware.health@2.1-impl \
     android.hardware.health@2.1-service
 
+# HIDL
+MITHORIUM_PRODUCT_PACKAGES += \
+    android.hidl.base@1.0 \
+    android.hidl.base@1.0_system \
+    android.hidl.base@1.0.vendor \
+    android.hidl.manager@1.0 \
+    android.hidl.manager@1.0_system \
+    android.hidl.manager@1.0.vendor \
+    libhidltransport.vendor \
+    libhwbinder.vendor
+
 # IMS
 MITHORIUM_PRODUCT_PACKAGES += \
     android.hardware.camera.device@3.3 \
@@ -264,7 +275,7 @@ endif
 
 # ParanoidDoze
 MITHORIUM_PRODUCT_PACKAGES += \
-    ParanoidDoze
+    XPerienceDoze
 
 PRODUCT_SYSTEM_EXT_PROPERTIES += \
     ro.sensor.proximity=true
@@ -308,6 +319,17 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/sec_config:$(TARGET_COPY_OUT_VENDOR)/etc/sec_config
+
+# QTI framework detect
+MITHORIUM_PRODUCT_PACKAGES += \
+    libvndfwk_detect_jni.qti \
+    libqti_vndfwk_detect \
+    libvndfwk_detect_jni.qti.vendor \
+    libqti_vndfwk_detect.vendor \
+    libqti_vndfwk_detect_system \
+    libqti_vndfwk_detect_vendor \
+    libvndfwk_detect_jni.qti_system \
+    libvndfwk_detect_jni.qti.vendor
 
 # QTI Components
 TARGET_COMMON_QTI_COMPONENTS += \
@@ -428,6 +450,3 @@ endif
 
 # MIthorium HALs
 $(call inherit-product, hardware/mithorium/mithorium_qcom_hals.mk)
-
-# QC common
-$(call inherit-product, device/qcom/common/common.mk)
